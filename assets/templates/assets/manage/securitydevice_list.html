@@ -1,0 +1,14 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table_th %}
+    <th>资产名称</th>
+    <th>安全设备类型</th>
+    <th>安全设备型号</th>
+{% endblock %}
+
+{% block assets_table_td %}
+    <td>{{ asset.name }}</td>
+    <td>{{ asset.securitydevice.get_sub_asset_type_display }}</td>
+    <td>{{ asset.securitydevice.model }}</td>
+{% endblock %}

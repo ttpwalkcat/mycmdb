@@ -1,0 +1,27 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table_th %}
+    <th>资产名称</th>
+    <th>服务器类型</th>
+    <th>添加方式</th>
+    <th>宿主机</th>
+    <th>服务器型号</th>
+    <th>Raid类型</th>
+    <th>操作系统类型</th>
+    <th>发行商</th>
+    <th>操作系统版本</th>
+{% endblock %}
+
+{% block assets_table_td %}
+    <td>{{ asset.name }}</td>
+    <td>{{ asset.server.get_sub_asset_type_display }}</td>
+    <td>{{ asset.server.created_by }}</td>
+    <td>{{ asset.server.hosted_on }}</td>
+    <td>{{ asset.server.model }}</td>
+    <td>{{ asset.server.raid_type }}</td>
+    <td>{{ asset.server.os_type }}</td>
+    <td>{{ asset.server.os_distribution }}</td>
+    <td>{{ asset.server.os_release }}</td>
+{% endblock %}
+

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+
+    </section>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    {% block box_title %}
+                        资源列表
+                    {% endblock %}
+                </h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <button type="button" class="btn btn-default margin" data-toggle="modal" data-target="#modal-edit">
+                        <a href="/assets/asset_manage_new/{{ asset_type }}" class="text-white">
+                            <i class="fa fa-plus">&nbsp&nbsp新建</i>
+                        </a>
+                    </button>
+                </div>
+                <div class="table">
+                {% block assets_table %}
+                    <table id="assets_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            {% block assets_table_th %}{% endblock %}
+                            <th style="width: 9%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for asset in assets %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                {% block assets_table_td %}{% endblock %}
+                                <td>
+                                    <!-- 修改、删除 按钮 -->
+                                    <div class="btn-group">
+                                        <!--
+                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                        -->
+                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </button>
+                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <div>
+                                您还未创建， <a href="#">立即创建！</a>
+                                </div>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+// 提示冒泡(Tooltip)，用于数据行最后"修改"、"删除" 图标在鼠标悬浮时冒泡提示
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+</script>
+{% endblock %}

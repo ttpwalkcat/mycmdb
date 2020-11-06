@@ -1,0 +1,43 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table %}
+                <table id="assets_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>标签名</th>
+                        <th>创建日期</th>
+                        <th>修改日期</th>
+                        <th style="width: 9%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for tag in tags %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ tag.name }}</td>
+                            <td>{{ tag.create_date }}</td>
+                            <td>{{ tag.modify_date }}</td>
+                            <td>
+                                <!-- 修改、删除 按钮 -->
+                                <div class="btn-group">
+                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                                            <a href="{% url 'assets:server_manage' tag.id %}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </button>
+                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                                            <a href="{% url 'assets:server_manage' tag.id %}">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>您还未创建标签， <a href="#">立即创建！</a></tr>    <!-- 待优化 -->
+                    {% endfor %}
+                    </tbody>
+                </table>
+{% endblock %}

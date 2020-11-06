@@ -7,14 +7,16 @@
 {% endblock %}
 
 {% block breadcrumb %}
-<!-- Content Header (Page header) -->
+    <!-- Content Header (Page header) -->
+    <!-- 详情页页头设计 -->
     <section class="content-header">
         <h1>
             资产详细
             <small>asset info</small>
         </h1>
+        <!-- 页面路径 -->
         <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li><a href="{% url 'assets:dashboard' %}"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li>资产总表</li>
             <li class="active">资产详细</li>
         </ol>
@@ -27,19 +29,19 @@
         <!-- Default box -->
         <div class="box">
 
-            <div class="box-header with border">
+            <div class="box-header with-border">
             <h3 class="box-title"><strong class="btn btn-block btn-primary btn-lg">资产：{{ asset.name }}</strong></h3>
 
-            <div class="box-tools pull-right">
-                <!-- 添加右上角折叠按钮，AdminLTE 自带折叠工具 -->
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-                    <i class="fa fa-minus"></i>
-                </button>
-                <!-- 添加右上角删除按钮，AdminLTE 自带工具 -->
-                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                    <i class="fa fa-times"></i>
-                </button>
-            </div>
+                <div class="box-tools pull-right">
+                    <!-- 添加右上角折叠按钮，AdminLTE 自带折叠工具 -->
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <!-- 添加右上角删除按钮，AdminLTE 自带工具 -->
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="box-body">

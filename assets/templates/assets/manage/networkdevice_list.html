@@ -1,0 +1,24 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table_th %}
+    <th>资产名称</th>
+    <th>网络设备类型</th>
+    <th>VLanIP</th>
+    <th>内网IP</th>
+    <th>网络设备型号</th>
+    <th>设备固件版本</th>
+    <th>端口个数</th>
+    <th>详细配置</th>
+{% endblock %}
+
+{% block assets_table_td %}
+     <td>{{ asset.name }}</td>
+     <td>{{ asset.networkdevice.get_sub_asset_type_display }}</td>
+     <td>{{ asset.networkdevice.vlan_ip }}</td>
+     <td>{{ asset.networkdevice.intranet_ip }}</td>
+     <td>{{ asset.networkdevice.model }}</td>
+     <td>{{ asset.networkdevice.firmware }}</td>
+     <td>{{ asset.networkdevice.port_num }}</td>
+     <td>{{ asset.networkdevice.device_detail }}</td>
+{% endblock %}

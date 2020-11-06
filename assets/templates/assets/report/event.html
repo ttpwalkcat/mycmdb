@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}事件记录{% endblock %}
+
+{% block css %}
+     <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<section class="content-header">
+    <h1>
+        事件记录
+        <small>events list</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
+        <li class="active">运营分析</li>
+        <li class="active">事件记录</li>
+    </ol>
+</section>
+{% endblock %}
+
+{% block content %}
+    <section>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <!--<div class="box-header">
+                </div>-->
+                <div class="box-body">
+                    <table id="events_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>事件名称</th>
+                            <th>资源(已审批)</th>
+                            <th>资源(审批失败)</th>
+                            <th>事件类型</th>
+                            <th>事件子项</th>
+                            <th>事件详情</th>
+                            <th>事件时间</th>
+                            <th>事件执行人</th>
+                            <th>备注</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ event.name|default:'-' }}</td>
+                                <td>{{ event.asset.name|default:'-' }}</td>
+                            <!--
+                                <td>
+                                    {% if event.asset_id|length > 0 %}
+                                        <a href="{% url 'assets:index' event.asset_id %}">{{ event.asset.name|default:'-' }}</a>
+                                    {% else %}
+                                        {{ event.asset.name|default:'-' }}
+                                    {% endif %}
+                                </td>
+                            -->
+                                <td>{{ event.newassetapprovalzone.sn|default:'-' }}</td>
+                                <td>{{ event.get_event_type_display }}</td>
+                                <td>{{ event.component|default:'-' }}</td>
+                                <td>{{ event.detail|default:'-' }}</td>
+                                <td>{{ event.date }}</td>
+                                <td>{{ event.user }}</td>
+                                <td>{{ event.memo|default:'-' }}</td>
+                            </tr>
+                            {% empty %}
+                                <tr>没有数据！</tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'adminlte-2.4.10/bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+
+    <script>
+    $(function () {
+        $('#events_table').DataTable({
+          "paging": true,       <!-- 允许分页 -->
+          "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+          "searching": true,    <!-- 允许内容搜索 -->
+          "ordering": true,     <!-- 允许排序 -->
+          "info": true,         <!-- 显示信息 -->
+          "autoWidth": false    <!-- 固定宽度 -->
+        })
+    })
+    </script>
+{% endblock %}

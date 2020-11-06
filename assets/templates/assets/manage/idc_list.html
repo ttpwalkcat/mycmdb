@@ -1,0 +1,41 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table %}
+                <table id="assets_table" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>机房名称</th>
+                        <th>备注</th>
+                        <th style="width: 9%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for idc in idcs %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ idc.name }}</td>
+                            <td>{{ idc.mome }}</td>
+                            <td>
+                                <!-- 修改、删除 按钮 -->
+                                <div class="btn-group">
+                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                                            <a href="{% url 'assets:server_manage' idc.id %}">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </button>
+                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                                            <a href="{% url 'assets:server_manage' idc.id %}">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>您还未创建机房， <a href="#">立即创建！</a></tr>    <!-- 待优化 -->
+                    {% endfor %}
+                    </tbody>
+                </table>
+{% endblock %}

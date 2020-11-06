@@ -1,0 +1,45 @@
+{% extends 'base_assets_form.html' %}
+
+
+{# 各类型对应表单 #}
+{% block extends_form %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3>{{ asset.get_asset_type_display }}信息</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="sub_asset_type" class="col-sm-2 control-label">软件类型</label>
+                    <div class="col-sm-3">
+                        <!--<input type="text" class="form-control" placeholder=" " value="{{ asset.software.get_sub_asset_type_display }}"> -->
+                        <select name="asset_type" id="id_asset_type" class="form-control">
+                            <option value="0">操作系统</option>
+                            <option value="1">办公\开发软件</option>
+                            <option value="2">业务软件</option>
+                        </select>
+                    </div>
+
+                    <label for="created_by" class="col-sm-2 control-label">授权数量</label>
+                    <div class="col-sm-3">
+                        <!--<input type="text" class="form-control" placeholder=" " value="{{ asset.software.get_created_by_choice_display }}">-->
+                        <select name="created_by" id="id_created_by" class="form-control">
+                            <option value="0">手动</option>
+                            <option value="1">自动</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="hosted_on" class="col-sm-2 control-label">软件/系统版本</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder=" " value="{{ asset.software.hosted_on }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

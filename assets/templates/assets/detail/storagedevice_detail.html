@@ -1,0 +1,19 @@
+{% extends 'base_detail.html' %}
+
+{% block table_extends %}
+    <br />
+    <table border="1" class="table table-responsive" style="border-left:3px solid green;border-bottom:1px solid green">
+        <thead>
+        <tr>
+            <th>存储设备类型</th>
+            <th>存储设备型号</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ asset.storagedevice.get_sub_asset_type_display }}</td>
+            <td>{{ asset.storagedevice.model }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

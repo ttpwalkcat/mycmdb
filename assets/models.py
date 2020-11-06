@@ -15,6 +15,7 @@ class Asset(models.Model):
     )
 
     asset_status = (
+        # 待审批;备用;预上线;在线;故障;下线;未知;
         (0, '在线'),
         (1, '下线'),
         (2, '未知'),
@@ -26,7 +27,7 @@ class Asset(models.Model):
     name = models.CharField(max_length=64, unique=True, verbose_name="资产名称")  # 唯一
     sn = models.CharField(max_length=128, unique=True, verbose_name="资产序列号") # 唯一
     business_unit = models.ForeignKey('BusinessUnit', null=True, blank=True, verbose_name="所属业务线", on_delete=models.SET_NULL)
-    status = models.SmallIntegerField(choices=asset_status, default=0, verbose_name="设备状态")
+    status = models.SmallIntegerField(choices=asset_status, default=0, verbose_name="设备状态(待审批;备用;预上线;在线;故障;下线;未知;)")
 
     manufacturer = models.ForeignKey('Manufacturer', null=True, blank=True, verbose_name="制造商", on_delete=models.SET_NULL)
     manage_ip = models.GenericIPAddressField(null=True, blank=True, verbose_name="管理IP")

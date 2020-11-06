@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+    <section>
+
+    </section>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-default">
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    {% block box_title %}
+                        资源列表
+                    {% endblock %}
+                </h3>
+            </div>
+            <div class="box-body">
+                <div>
+                    <button type="button" class="btn btn-default bg-green color-palette margin" data-toggle="modal" data-target="#modal-edit">
+                        <i class="fa fa-plus"></i>&nbsp&nbsp新建
+                    </button>
+                </div>
+                <div class="table">
+                {% block assets_table %}
+                    <table id="assets_table" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for server in servers %}
+                            <tr>
+                                <td>
+                                    <!-- 修改、删除 按钮 -->
+                                    <div class="btn-group">
+                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-edit">
+                                            <i class="fa fa-edit" data-toggle="tooltip" data-placement="auto bottom" title="修改"></i>
+                                        </button>
+                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-delete">
+                                            <i class="fa fa-trash-o" data-toggle="tooltip" data-placement="auto bottom" title="删除"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <div>
+                                您还未创建， <a href="#">立即创建！</a>
+                                </div>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="modal fade" id="modal-edit" aria-labelledby="myLargeModalLabel">
+          <div class="modal-dialog modal-lg">   <!-- 大号弹窗 myLargeModalLabel、modal-lg   小号弹窗 mySmallModalLabel、modal-sm，不定义表示默认  -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">默认弹框</h4>
+              </div>
+              <div class="modal-body">
+              <form role="form" class="form-horizontal">
+                        {# 根据不同资源，编写对应表单 #}
+                        {% block extends_form %}
+
+                        {% endblock %}
+
+                    {# 资源总表对应表单 #}
+                    {% block asset_form %}
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <h3>资产共有信息</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">资产类型</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">所属业务线</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">资产名称</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">SN</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">设备状态</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">制造商</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">管理IP</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">所在机房</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">资产管理员</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">审批人</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">合同</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">价格</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">购买日期</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">过保日期</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">标签</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+
+                                        <label for="exampleInputEmail1" class="col-sm-2 control-label">备注</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" placeholder=".col-xs-5">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    {% endblock %}
+              </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">保存修改</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+    <div class="modal fade" id="modal-delete" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm">   <!-- 大号弹窗 myLargeModalLabel、modal-lg   小号弹窗 mySmallModalLabel、modal-sm，不定义表示默认  -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">删除确认</h4>
+                </div>
+                <div class="modal-body">
+                    <tr>是否删除
+                        {% block model_delete_body %}
+                        {# 用于子模板自定义删除确认弹窗，添加子模板对应的 资源名称 等信息 #}
+                        <!-- 示例：
+                        主机：{{ server.asset.name }}
+                        -->
+
+                        {% endblock %}
+                    </tr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+          </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+// 提示冒泡(Tooltip)，用于数据行最后"修改"、"删除" 图标在鼠标悬浮时冒泡提示
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+</script>
+{% endblock %}

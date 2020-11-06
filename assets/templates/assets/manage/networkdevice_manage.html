@@ -1,0 +1,66 @@
+{% extends 'base_assets_form.html' %}
+
+
+{# 各类型对应表单 #}
+{% block extends_form %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3>{{ asset.get_asset_type_display }}信息</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="sub_asset_type" class="col-sm-2 control-label">网络设备类型</label>
+                    <div class="col-sm-3">
+                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.networkdevice.get_sub_asset_type_display }}"> -->
+                        <select name="asset_type" id="id_asset_type" class="form-control">
+                            <option value="0">路由器</option>
+                            <option value="1">交换机</option>
+                            <option value="2">负载均衡</option>
+                            <option value="4">VPN设备</option>
+                        </select>
+                    </div>
+
+                    <label for="created_by" class="col-sm-2 control-label">端口个数</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder=" " value="{{ asset.networkdevice.port_num }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="created_by" class="col-sm-2 control-label">VLanIP</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder=" " value="{{ asset.networkdevice.vlan_ip }}">
+                    </div>
+                    <label for="hosted_on" class="col-sm-2 control-label">内网IP</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="" value="{{ asset.networkdevice.intranet_ip }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="raid_type" class="col-sm-2 control-label">网络设备型号</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder=" " value="{{ asset.networkdevice.model }}">
+                    </div>
+
+                    <label for="os_type" class="col-sm-2 control-label">设备固件版本</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder=" " value="{{ asset.networkdevice.firmware|default:'' }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="os_distribution" class="col-sm-2 control-label">详细配置</label>
+                    <div class="col-sm-3">
+                        <input type="textarea" class="form-control" placeholder=" " value="{{ asset.networkdevice.device_detail }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base_detail.html' %}
+
+{% block table_extends %}
+    <br />
+    <table border="1" class="table table-responsive" style="border-left:3px solid green;border-bottom:1px solid green">
+        <thead>
+        <tr>
+            <th>软件类型</th>
+            <th>授权数量</th>
+            <th>软件/系统版本</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ asset.software.get_sub_asset_type_display }}</td>
+            <td>{{ asset.software.license_num|default:0 }}</td>
+            <td>{{ asset.software.version|default:'N/A' }}</td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base_assets_list.html' %}
+
+
+{% block assets_table_th %}
+    <th>资产名称</th>
+    <th>软件类型</th>
+    <th>授权数量</th>
+    <th>软件/系统版本</th>
+{% endblock %}
+
+{% block assets_table_td %}
+    <td>{{ asset.name }}</td>
+    <td>{{ asset.software.get_sub_asset_type_display }}</td>
+    <td>{{ asset.software.license_num }}</td>
+    <td>{{ asset.software.version }}</td>
+{% endblock %}
