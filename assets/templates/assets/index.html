@@ -3,7 +3,7 @@
 {% block title %}资产总表{% endblock %}
 
 {% block css %}
-     <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -71,17 +71,19 @@
                     <td><a href="{% url 'assets:detail' asset.id %}">{{ asset.name }}</a></td>
                     <td>{{ asset.sn }}</td>
                     <td>{{ asset.business_unit|default_if_none:"_" }}</td>
-                      {% if asset.status == 0 %}
-                          <td><label class="label label-success">{{ asset.get_status_display }}</label></td>
-                      {% elif asset.status == 1 %}
-                          <td><label class="label label-warning">{{ asset.get_status_display }}</label></td>
-                      {% elif asset.status == 2 %}
-                          <td><label class="label-default">{{ asset.get_status_display }}</label></td>
-                      {% elif asset.status == 3 %}
-                          <td><label class="label label-danger">{{ asset.get_status_display }}</label></td>
-                      {% elif asset.status == 4 %}
-                          <td><label class="label label-info">{{ asset.get_status_display }}</label></td>
-                      {% endif %}
+                    {% if asset.status == 0 %}
+                        <td><label class="label label-primary">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 1 %}
+                        <td><label class="label label-success">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 2 %}
+                        <td><label class="label label-warning">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 3 %}
+                        <td><label class="label label-default">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 4 %}
+                        <td><label class="label label-danger">{{ asset.get_status_display }}</label></td>
+                    {% elif asset.status == 5 %}
+                        <td><label class="label label-info">{{ asset.get_status_display }}</label></td>
+                    {% endif %}
                     <td>{{ asset.idc|default:"_" }}</td>
                     <td>{{ asset.modify_time|date:"Y/m/d [H:m:s]" }}
                     <td>

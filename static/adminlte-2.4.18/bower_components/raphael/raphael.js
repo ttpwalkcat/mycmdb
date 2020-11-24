@@ -8398,9 +8398,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c)
      [ method ]
      **
      * Binds given event handler with a given name to only run once then unbind itself.
-     | eve.once("login", f);
-     | eve("login"); // triggers f
-     | eve("login"); // no listeners
+     | eve.once("accounts", f);
+     | eve("accounts"); // triggers f
+     | eve("accounts"); // no listeners
      * Use @eve to trigger the listener.
      **
      > Arguments

@@ -31,7 +31,7 @@
 
 {% block content %}
 
-<form role="form" class="form-horizontal" action="/assets/asset_manage_update/{{ asset.id }}/" method="post">
+<form role="form" class="form-horizontal" action="{% block form_action %}{% endblock %}" method="post">
     {% csrf_token %}
     {# 根据不同资源，编写对应表单 #}
     {% block extends_form %} {% endblock %}
@@ -39,218 +39,240 @@
     {# 资源总表对应表单 #}
     {% block asset_form %}
         <div class="box box-info">
-        <div class="box-header with-border">
-            <h3>资产共有信息</h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="form-group">
-                    <label for="asset_type" class="col-sm-2 control-label">资产类型</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.server.asset.get_asset_type_display }}">-->
-                        <select name="status" id="id_status" class="form-control">
-                            <option value="0">在线</option>
-                            <option value="1">下线</option>
-                            <option value="2">未知</option>
-                            <option value="3">故障</option>
-                            <option value="4">备用</option>
-                        </select>
-                    </div>
-
-                    <label for="business_unit" class="col-sm-2 control-label">所属业务线</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ server.asset.business_unit }}">-->
-                        <select name="business_unit" id="id_business_unit" class="form-control">
-                            {% for bu in businessunit %}
-                                <option value="{{ bu.id }}">{{ bu.name }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
+            <div class="box-header with-border">
+                <h3>资产共有信息</h3>
             </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="assetname" class="col-sm-2 control-label">资产名称</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="" value="{{ asset.name }}"> <!--server.-->
-                    </div>
-
-                    <label for="sn" class="col-sm-2 control-label">SN</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="" value="{{ asset.sn }}">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="status" class="col-sm-2 control-label">设备状态</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="" value="{{ asset.status }}">
-                    </div>
-
-                    <label for="manufacturer" class="col-sm-2 control-label">制造商</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.manufacturer }}">-->
-                        <select name="manufacturers" id="id_manufacturers" class="form-control">
-                            {% for mf in manufacturers %}
-                                <option value="{{ mf.id }}">{{ mf.name }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="manage_ip" class="col-sm-2 control-label">管理IP</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="" value="{{ asset.manage_ip|default:"0.0.0.0" }}">
-                    </div>
-
-                    <label for="idc" class="col-sm-2 control-label">所在机房</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.idc }}">-->
-                        <select name="admin" id="id_admin" class="form-control">
-                            {% for idc in idcs %}
-                                <option value="{{ idc.id }}">{{ idc.name }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="admin" class="col-sm-2 control-label">资产管理员</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.admin }}">-->
-                        <select name="admin" id="id_admin" class="form-control">
-                            {% for u2 in users %}
-                                <option value="{{ u2 }}">{{ u2 }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <label for="approved_by" class="col-sm-2 control-label">审批人</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.approved_by }}">-->
-                        <select name="approved_by" id="id_approved_by" class="form-control">
-                            {% for u2 in users %}
-                                <option value="{{ u2 }}">{{ u2 }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="contract" class="col-sm-2 control-label">合同</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.contract }}">-->
-                        <select name="contract" id="id_contract" class="form-control">
-                            {% for ct in contract %}
-                                <option value="{{ ct.id }}">{{ ct.name }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <label for="price" class="col-sm-2 control-label">价格</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="单位元" value="{{ asset.price|default:0 }}">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="purchase_day" class="col-sm-2 control-label">购买日期</label>
-                    <div class="col-sm-3">
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
-                            </div>
-                            <input id="datepicker" type="text" class="form-control pull-right datepicker" value="{{ asset.purchase_day|default:'' }}">
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="asset_type" class="col-sm-2 control-label">资产类型</label>
+                        <div class="col-sm-3">
+                            {% if asset %}
+                                <input name="asset_type" type="text" class="form-control" placeholder="" value="{{ asset.get_asset_type_display }}">
+                            {% else %}
+                                <select name="asset_type" id="id_asset_type" class="form-control">
+                                    <option value="server">服务器</option>
+                                    <option value="networkdevice">网络设备</option>
+                                    <option value="storagedevice">存储设备</option>
+                                    <option value="securitydevice">安全设备</option>
+                                    <option value="software">软件资产</option>
+                                </select>
+                            {% endif %}
                         </div>
-                    </div>
 
-                    <label for="expire_day" class="col-sm-2 control-label">过保日期</label>
-                    <div class="col-sm-3">
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                              <i class="fa fa-calendar"></i>
-                            </div>
-                            <input id="datepicker" type="text" class="form-control pull-right datepicker" value="{{ asset.expire_day|default:'' }}">
+                        <label for="business_unit" class="col-sm-2 control-label">所属业务线</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.business_unit }}">-->
+                            <select name="business_unit" id="id_business_unit" class="form-control">
+                                {% for bu in businessunit %}
+                                    <option value="{{ bu.id }}">{{ bu.name }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="tag" class="col-sm-2 control-label">标签</label>
-                    <div class="col-sm-3">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ asset.tags }}">-->
-                        <select name="tags" id="id_tags" class="form-control select2" multiple="multiple" data-placeholder=" 选择标签" style="width: 100%;">
-                            {% for tag in tags %}
-                                <option value="{{ tag.id }}">{{ tag.name }}</option>
-                            {% empty %}
-                                <option value="" selected="">---------</option>
-                            {% endfor %}
-                        </select>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="assetname" class="col-sm-2 control-label">资产名称</label>
+                        <div class="col-sm-3">
+                            <input name="name" type="text" class="form-control" placeholder="" value="{{ asset.name }}"> <!--server.-->
+                        </div>
+
+                        <label for="sn" class="col-sm-2 control-label">SN</label>
+                        <div class="col-sm-3">
+                            <input name="sn" type="text" class="form-control" placeholder="" value="{{ asset.sn }}">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="memo" class="col-sm-2 control-label">备注</label>
-                    <div class="col-sm-6">
-                        <!--<input type="text" class="form-control" placeholder="" value="{{ server.asset.memo }}">-->
-                            <textarea name="memo" cols="125" rows="3" class="vLargeTextField" id="id_memo"></textarea>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="status" class="col-sm-2 control-label">设备状态</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.status }}">-->
+                            <select name="status" id="id_status" class="form-control">
+                                <option value="0">待审批</option>
+                                <option value="1">在线</option>
+                                <option value="2">下线</option>
+                                <option value="3">未知</option>
+                                <option value="4">故障</option>
+                                <option value="5">备用</option>
+                            </select>
+                        </div>
+
+                        <label for="manufacturer" class="col-sm-2 control-label">制造商</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.manufacturer }}">-->
+                            <select name="manufacturer" id="id_manufacturer" class="form-control">
+                                {% for mf in manufacturer %}
+                                    <!-- 这里option 的value 使用mf.name 而不是 mf.id，是为了保证 asset_handler._update_manufacturer 方法对 client 上报数据的兼容 -->
+                                    <option value="{{ mf.name }}">{{ mf.name }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <!--
-            <div class="row">
-                <div class="form-group">
-                <label for="exampleInputEmail1" class="col-sm-2 control-label">多选</label>
-                    <div class="col-sm-3">
-                        <select class="form-control select2" multiple="multiple" data-placeholder="选择地区"
-                                style="width: 100%;">
-                          <option>阿拉巴马州</option>
-                          <option>阿拉斯加州</option>
-                          <option>加利福尼亚州</option>
-                          <option>特拉华州</option>
-                          <option>田纳西州</option>
-                          <option>德克萨斯州</option>
-                          <option>华盛顿</option>
-                        </select>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="manage_ip" class="col-sm-2 control-label">管理IP</label>
+                        <div class="col-sm-3">
+                            <input name="manage_ip" type="text" class="form-control" placeholder="" value="{{ asset.manage_ip|default:"0.0.0.0" }}">
+                        </div>
+
+                        <label for="idc" class="col-sm-2 control-label">所在机房</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.idc }}">-->
+                            <select name="idc" id="id_idc" class="form-control">
+                                {% for idc in idcs %}
+                                    <option value="{{ idc.id }}">{{ idc.name }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-              </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="admin" class="col-sm-2 control-label">资产管理员</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.admin }}">-->
+                            <select name="admin" id="id_admin" class="form-control">
+                                {% for u2 in users %}
+                                    <option value="{{ u2 }}">{{ u2 }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <label for="approved_by" class="col-sm-2 control-label">审批人</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.approved_by }}">-->
+                            <select name="approved_by" id="id_approved_by" class="form-control">
+                                {% for u2 in users %}
+                                    <option value="{{ u2 }}">{{ u2 }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="contract" class="col-sm-2 control-label">合同</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.contract }}">-->
+                            <select name="contract" id="id_contract" class="form-control">
+                                {% for ct in contract %}
+                                    <option value="{{ ct.id }}">{{ ct.name }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <label for="price" class="col-sm-2 control-label">价格</label>
+                        <div class="col-sm-3">
+                            <input name="price" type="text" class="form-control" placeholder="单位元" value="{{ asset.price|default:0 }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="purchase_day" class="col-sm-2 control-label">购买日期</label>
+                        <div class="col-sm-3">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                                <input name="purchase_day" id="datepicker" type="text" class="form-control pull-right datepicker" value="{{ asset.purchase_day|default:'' }}">
+                            </div>
+                        </div>
+
+                        <label for="expire_day" class="col-sm-2 control-label">过保日期</label>
+                        <div class="col-sm-3">
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                  <i class="fa fa-calendar"></i>
+                                </div>
+                                <input name="expire_day" id="datepicker" type="text" class="form-control pull-right datepicker" value="{{ asset.expire_day|default:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="tag" class="col-sm-2 control-label">标签</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.tags }}">-->
+                            <select name="tags" id="id_tags" class="form-control select2" multiple="multiple" data-placeholder=" 选择标签" style="width: 100%;">
+                                {% for tag in tags %}
+                                    <option value="{{ tag.id }}">{{ tag.name }}</option>
+                                {% empty %}
+                                    <option value="" selected="">---------</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <label for="created_by" class="col-sm-2 control-label">创建方式</label>
+                        <div class="col-sm-3">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.status }}">-->
+                            <select name="created_by" id="id_created_by" class="form-control">
+                                <option value="auto">自动添加</option>
+                                <option value="manual" selected>手工录入</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="remark" class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-6">
+                            <!--<input type="text" class="form-control" placeholder="" value="{{ asset.remark }}">-->
+                            <textarea name="remark" cols="125" rows="3" class="vLargeTextField" id="id_remark">{{ asset.remark|default:'' }}</textarea>
+                        </div>
+                    </div>
+                </div>
+            <!--
+                <div class="row">
+                    <div class="form-group">
+                    <label for="exampleInputEmail1" class="col-sm-2 control-label">多选</label>
+                        <div class="col-sm-3">
+                            <select class="form-control select2" multiple="multiple" data-placeholder="选择地区"
+                                    style="width: 100%;">
+                              <option>阿拉巴马州</option>
+                              <option>阿拉斯加州</option>
+                              <option>加利福尼亚州</option>
+                              <option>特拉华州</option>
+                              <option>田纳西州</option>
+                              <option>德克萨斯州</option>
+                              <option>华盛顿</option>
+                            </select>
+                        </div>
+                  </div>
+                </div>
+                -->
             </div>
-            -->
         </div>
-    </div>
     {% endblock %}
 
-
-    <div class="box-footer">
-        <button class="btn btn-default">
-            <a href="/assets/asset_list/{{ asset.asset_type }}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
-            取消
-            </a>
-        </button>
-        <button type="submit" class="btn btn-primary">
-            提交
-        </button>
-    </div>
+    {% block form_button %}
+        <div class="box-footer">
+            <button class="btn btn-default">
+                <a href="/assets/asset_list/{{ asset_type }}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
+                取消
+                </a>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                提交
+            </button>
+        </div>
+    {% endblock %}
 </form>
 
 

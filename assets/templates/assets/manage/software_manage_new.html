@@ -1,0 +1,44 @@
+{% extends 'base_assets_form.html' %}
+
+
+{% block form_action %}
+    /assets/asset_manage_new/{{ asset_type }}
+{% endblock %}
+{# 各类型对应表单 #}
+{% block extends_form %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3>{{ asset.get_asset_type_display|default:"软件/系统" }}信息</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="sub_asset_type" class="col-sm-2 control-label">软件类型</label>
+                    <div class="col-sm-3">
+                        <!--<input type="text" class="form-control" placeholder=" " value="{{ asset.software.get_sub_asset_type_display }}"> -->
+                        <select name="sub_asset_type" id="id_sub_asset_type" class="form-control">
+                            <option value="1">操作系统</option>
+                            <option value="2">办公\开发软件</option>
+                            <option value="3">业务软件</option>
+                        </select>
+                    </div>
+
+                    <label for="license_num" class="col-sm-2 control-label">授权数量</label>
+                    <div class="col-sm-3">
+                        <input name="license_num" type="text" class="form-control" placeholder=" " value="{{ asset.software.license_num }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="version" class="col-sm-2 control-label">软件/系统版本</label>
+                    <div class="col-sm-3">
+                        <input name="version" type="text" class="form-control" placeholder=" " value="{{ asset.software.version }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

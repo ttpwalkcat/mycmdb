@@ -52,7 +52,7 @@ export default class Filterizr implements Destructible {
      */
     shuffle(): void;
     /**
-     * Updates the perferences of the users for rendering the Filterizr grid,
+     * Updates the perferences of the accounts for rendering the Filterizr grid,
      * additionally performs error checking on the new options passed.
      * @param newOptions to override the defaults.
      */

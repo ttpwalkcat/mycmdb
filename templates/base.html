@@ -250,15 +250,27 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">导航栏</li>
         <!-- Optionally, you can add icons to the links -->
-        <li><a href="{% url 'assets:dashboard' %}"><i class="fa fa-dashboard"></i> <span>仪表盘</span></a></li>
-        <li><a href="{% url 'assets:index' %}"><i class="fa fa-table"></i> <span>资源概览</span></a></li>
-        <li><a href="{% url 'assets:index' %}"><i class="fa fa-table"></i> <span>资源审批</span></a></li>
-          <li class="treeview"><a href="#"><i class="fa fa-server"></i>资源管理
-              <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-              </span>
+        <li class="dashboard">
+            <a href="{% url 'assets:dashboard' %}"><i class="fa fa-dashboard"></i>
+            <span>仪表盘</span></a>
+        </li>
+        <li class="index">
+            <a href="{% url 'assets:index' %}"><i class="fa fa-table"></i>
+            <span>资源概览</span></a>
+        </li>
+        <li class="new_asset_approval_list">
+            <a href="{% url 'assets:new_asset_approval_list' %}"><i class="fa fa-check-circle"></i>
+            <span>资源审批</span></a>
+        </li>
+        <li class="treeview asset_list">
+            <a href="#">
+                <i class="fa fa-server"></i>资源管理
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
             </a>
             <ul class="treeview-menu">
+                <!-- 使用urlconf的名称空间网址; asset_type='server' 表示传入关键字参数 -->
                 <li><a href="{% url 'assets:asset_list' asset_type='server' %}"><i class="fa"></i>服务器</a></li>
                 <li><a href="{% url 'assets:asset_list' asset_type='networkdevice' %}"><i class="fa"></i>网络设备</a></li>
                 <li><a href="{% url 'assets:asset_list' asset_type='storagedevice' %}"><i class="fa"></i>存储设备</a></li>
@@ -270,21 +282,22 @@ desired effect
                 <li><a href="{% url 'assets:asset_list' asset_type=8 %}"><i class="fa"></i>机房</a></li>
                 <li><a href="{% url 'assets:asset_list' asset_type=9 %}"><i class="fa"></i>标签</a></li>
             </ul>
-          </li>
-          <li class="treeview"><a href="#"><i class="fa fa-arrow-circle-o-down"></i>运营分析
-              <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-              </span>
-              </a>
+        </li>
+        <li class="treeview event">
+            <a href="#"><i class="fa fa-arrow-circle-o-down"></i>运营分析
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
             <ul class="treeview-menu">
-                <li><a href="#"><i class="fa"></i>报表查询</a></li>
-                <li><a href="{% url 'assets:event' %}"><i class="fa"></i>事件记录</a></li>
+              <li><a href="#"><i class="fa"></i>报表查询</a></li>
+              <li><a href="{% url 'assets:event' %}"><i class="fa"></i>事件记录</a></li>
             </ul>
-          </li>
-          <li><a href="#"><i class="fa fa-circle-o"></i>用户管理</a></li>
-            <ul class="treeview-menu">
-            </ul>
-          <li><a href="#"><i class="fa fa-circle-o"></i>系统管理</a></li>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i>用户管理</a></li>
+            <ul class="treeview-menu"></ul>
+        <li><a href="#"><i class="fa fa-circle-o"></i>系统管理</a></li>
+            <ul class="treeview-menu"></ul>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -335,12 +348,39 @@ desired effect
 {% block script %}{% endblock %}
 
 <script>
-    $('ul.sidebar-menu li').each(function(i){
-        if($(this).children().first().attr('href')==='{{ request.path }}'){
-            $(this).addClass('active');
-        }else{
-        }
-    });
+    var str = document.location.pathname.split("/")[1];
+    var two = document.location.pathname.split("/")[2];
+    // var three = document.location.pathname.split("/")[3];
+    if (str == "assets"){
+       // $("." + str).addClass('active');
+       $("." + two).addClass('active');
+    }
+    // else if (str == "assets"  && two == "event"){
+    //    $(".analyze").addClass('active');
+    // }
+    // else {
+    //    try {
+    //         // $("." + str).addClass('active');
+    //         $("." + two).addClass('active');
+    //    }
+    //    catch(err) {
+    //        }
+    // }
+    // $("ul.sidebar-menu li a ").each(function () {
+    //     if($($(this))[0].href==String(window.location)){
+    //          $(this).parent().addClass('action');
+    //         $($(this)).parent().parent().parent().addClass('action');
+    //     }
+    // });
+
+    // $('ul.sidebar-menu li a').each(function(i){
+    //     if($(this).children().first().attr('href')==='{{ request.path }}'){
+    //         $(this).addClass('active');
+    //     }else{
+    //     }
+    // });
+
+
 
     //变量AdminLTEOptions用来修改app.js中的配置，所有需要在app.js之前编写
   // （其实放在app.js之后也可以，看你代码结构是什么了，正常需要放在app.js之前）

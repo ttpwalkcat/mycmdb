@@ -15653,7 +15653,7 @@ var tabs = $.widget( "ui.tabs", {
 			.addClass( "ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" )
 			.attr( "role", "tablist" )
 
-			// Prevent users from focusing disabled tabs via click
+			// Prevent accounts from focusing disabled tabs via click
 			.delegate( "> li", "mousedown" + this.eventNamespace, function( event ) {
 				if ( $( this ).is( ".ui-state-disabled" ) ) {
 					event.preventDefault();
@@ -15970,7 +15970,7 @@ var tabs = $.widget( "ui.tabs", {
 	},
 
 	_getIndex: function( index ) {
-		// meta-function to give users option to provide a href string instead of a numerical index.
+		// meta-function to give accounts option to provide a href string instead of a numerical index.
 		if ( typeof index === "string" ) {
 			index = this.anchors.index( this.anchors.filter( "[href$='" + index + "']" ) );
 		}

@@ -3,7 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block css %}
-
+     <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
 {% endblock %}
 
 {% block breadcrumb %}
@@ -14,7 +14,7 @@
 
 {% block content %}
 
-
+<section class="content">
 <div class="row">
     <div class="col-xs-12">
         <div class="box box-default">
@@ -27,11 +27,13 @@
             </div>
             <div class="box-body">
                 <div>
+                    {% block title_button %}
                     <button type="button" class="btn btn-default margin" data-toggle="modal" data-target="#modal-edit">
                         <a href="/assets/asset_manage_new/{{ asset_type }}" class="text-white">
                             <i class="fa fa-plus">&nbsp&nbsp新建</i>
                         </a>
                     </button>
+                    {% endblock %}
                 </div>
                 <div class="table">
                 {% block assets_table %}
@@ -59,16 +61,24 @@
                                             <i class="fa fa-trash-o"></i>
                                         </button>
                                         -->
+                                        <a href="{% url 'assets:asset_manage_update' asset.id %}" id="edit_button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="修改">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{% url 'assets:asset_manage_del' asset.id%}" id="delete_button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="删除">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                        <!--
                                         <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
                                             <a href="{% url 'assets:asset_manage_update' asset.id %}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
                                         </button>
                                         <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
-                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
+                                            <a href="{% url 'assets:asset_manage_del' asset.id %}">
                                                 <i class="fa fa-trash-o"></i>
                                             </a>
                                         </button>
+                                        -->
                                     </div>
                                 </td>
                             </tr>
@@ -87,7 +97,7 @@
         </div>
     </div>
 </div>
-
+</section>
 
 {% endblock %}
 
@@ -99,4 +109,20 @@ $(function () {
 })
 
 </script>
+
+    <script src="{% static 'adminlte-2.4.10/bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+
+    <script>
+    $(function () {
+        $('#assets_table').DataTable({
+          "paging": true,       <!-- 允许分页 -->
+          "lengthChange": true, <!-- 允许改变每页显示的行数 -->
+          "searching": true,    <!-- 允许内容搜索 -->
+          "ordering": true,     <!-- 允许排序 -->
+          "info": true,         <!-- 显示信息 -->
+          "autoWidth": false    <!-- 固定宽度 -->
+        })
+    })
+    </script>
 {% endblock %}

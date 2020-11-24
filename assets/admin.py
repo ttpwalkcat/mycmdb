@@ -4,35 +4,36 @@ from django.contrib.admin import helpers
 from assets import models
 from assets import asset_handler
 
-class NewAssetAdmin(admin.ModelAdmin):
-    list_display = ['asset_type', 'sn', 'model', 'manufacturer', 'create_time', 'modify_time']
-    list_filter = ['asset_type', 'manufacturer', 'create_time']
-    search_fields = ('sn',)
-
-    actions = ['approve_selected_new_assets']
-
-    def approve_selected_new_assets(self, request, queryset):
-        # 获得被打钩的 CheckBox 对应的资产
-        selected = request.POST.getlist(helpers.ACTION_CHECKBOX_NAME)
-        success_upline_number = 0
-        for asset_id in selected:
-            # print("ASSET_ID" + asset_id)
-            obj = asset_handler.ApproveAsset(request, asset_id)
-            ret = obj.asset_upline()
-            if ret:
-                success_upline_number += 1
-        # 顶部绿色提示信息
-        self.message_user(request, "成功批准 %s 条新资产时航线！" % success_upline_number)
-    approve_selected_new_assets.short_description = "批准选择的新资产"
-
-
-class AssetAdmin(admin.ModelAdmin):
-    list_display = ['asset_type', 'name', 'status', 'approved_by', 'create_time', 'modify_time']
-
-
+# class NewAssetAdmin(admin.ModelAdmin):
+#     list_display = ['asset_type', 'sn', 'model', 'manufacturer', 'create_time', 'update_time']
+#     list_filter = ['asset_type', 'manufacturer', 'create_time']
+#     search_fields = ('sn',)
+#
+#     actions = ['approve_selected_new_assets']
+#
+#     def approve_selected_new_assets(self, request, queryset):
+#         # 获得被打钩的 CheckBox 对应的资产
+#         selected = request.POST.getlist(helpers.ACTION_CHECKBOX_NAME)
+#         success_upline_number = 0
+#         for asset_id in selected:
+#             # print("ASSET_ID" + asset_id)
+#             obj = asset_handler.ApproveAsset(request, asset_id)
+#             ret = obj.asset_upline()
+#             if ret:
+#                 success_upline_number += 1
+#         # 顶部绿色提示信息
+#         self.message_user(request, "成功批准 %s 条新资产时航线！" % success_upline_number)
+#     approve_selected_new_assets.short_description = "批准选择的新资产"
+#
+#
+# class AssetAdmin(admin.ModelAdmin):
+#     list_display = ['asset_type', 'name', 'status', 'approved_by', 'create_time', 'update_time']
 
 
-admin.site.register(models.Asset, AssetAdmin)
+
+#admin.site.register(models.Asset, AssetAdmin)
+admin.site.register(models.Asset)
+
 admin.site.register(models.Server)
 admin.site.register(models.StorageDevice)
 admin.site.register(models.SecurityDevice)
@@ -48,4 +49,5 @@ admin.site.register(models.NIC)
 admin.site.register(models.RAM)
 admin.site.register(models.Software)
 admin.site.register(models.Tag)
-admin.site.register(models.NewAssetApprovalZone, NewAssetAdmin)
+#admin.site.register(models.NewAssetApprovalZone, NewAssetAdmin)
+admin.site.register(models.NewAssetApprovalZone)

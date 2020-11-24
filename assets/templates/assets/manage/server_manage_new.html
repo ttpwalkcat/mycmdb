@@ -1,0 +1,80 @@
+{% extends 'base_assets_form.html' %}
+
+
+{% block form_action %}
+    {# 这里的 asset_type 变量，来自 base.html 中定义侧边导航栏 URL 时传入的 关键字参数，如 asset_type="server"，Django 拿到该参数后通过 locals()和模板一并返回 #}
+    /assets/asset_manage_new/{{ asset_type }}
+{% endblock %}
+{# 各类型对应表单 #}
+{% block extends_form %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3>{{ asset.get_asset_type_display|default:"服务器" }}信息</h3>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="sub_asset_type" class="col-sm-2 control-label">服务器类型</label>
+                    <div class="col-sm-3">
+                        <!--<input type="text" class="form-control" placeholder=" " value="{{ asset.server.get_sub_asset_type_display }}"> -->
+                        <select name="sub_asset_type" id="id_sub_asset_type" class="form-control">
+                            <option value="1">PC服务器</option>
+                            <option value="2">刀片机</option>
+                            <option value="3">小型机</option>
+                        </select>
+                    </div>
+                    <!--
+                    <label for="created_by" class="col-sm-2 control-label">添加方式</label>
+                    <div class="col-sm-3">
+                        //<input type="text" class="form-control" placeholder=" " value="{{ asset.server.get_created_by_choice_display }}">
+                        <select name="created_by" id="id_created_by" class="form-control">
+                            <option value="manual">手工录入</option>
+                            <option value="auto">自动添加</option>
+                        </select>
+                    </div>
+                    -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="hosted_on" class="col-sm-2 control-label">宿主机</label>
+                    <div class="col-sm-3">
+                        <input name="hosted_on" type="text" class="form-control" placeholder=" " value="{{ asset.server.hosted_on }}">
+                    </div>
+
+                    <label for="model" class="col-sm-2 control-label">服务器型号</label>
+                    <div class="col-sm-3">
+                        <input name="model" type="text" class="form-control" placeholder=" " value="{{ asset.server.model }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="raid_type" class="col-sm-2 control-label">Raid类型</label>
+                    <div class="col-sm-3">
+                        <input name="raid_type" type="text" class="form-control" placeholder=" " value="{{ asset.server.raid_type|default:'' }}">
+                    </div>
+
+                    <label for="os_type" class="col-sm-2 control-label">操作系统类型</label>
+                    <div class="col-sm-3">
+                        <input name="os_type" type="text" class="form-control" placeholder=" " value="{{ asset.server.os_type }}">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="os_distribution" class="col-sm-2 control-label">操作系统发行商</label>
+                    <div class="col-sm-3">
+                        <input name="os_distribution" type="text" class="form-control" placeholder=" " value="{{ asset.server.os_distribution }}">
+                    </div>
+
+                    <label for="os_release" class="col-sm-2 control-label">操作系统版本</label>
+                    <div class="col-sm-3">
+                        <input name="os_release" type="text" class="form-control" placeholder=" " value="{{ asset.server.os_release }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

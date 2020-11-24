@@ -306,7 +306,7 @@
       LAYOUT_FIXED: '.layout-fixed',
       FOOTER: '.main-footer',
       PUSHMENU_BTN: '[data-widget="pushmenu"]',
-      LOGIN_BOX: '.login-box',
+      LOGIN_BOX: '.accounts-box',
       REGISTER_BOX: '.register-box'
     };
     var ClassName = {
@@ -317,7 +317,7 @@
       LAYOUT_FIXED: 'layout-fixed',
       NAVBAR_FIXED: 'layout-navbar-fixed',
       FOOTER_FIXED: 'layout-footer-fixed',
-      LOGIN_PAGE: 'login-page',
+      LOGIN_PAGE: 'accounts-page',
       REGISTER_PAGE: 'register-page',
       CONTROL_SIDEBAR_SLIDE_OPEN: 'control-sidebar-slide-open',
       CONTROL_SIDEBAR_OPEN: 'control-sidebar-open'
