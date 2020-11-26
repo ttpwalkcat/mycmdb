@@ -1,5 +1,7 @@
 {% extends 'base_assets_list.html' %}
 {% load static %}
+{% block title %}待审批资源列表{% endblock %}
+
 
 {% block css %}
     <!-- iCheck for checkboxes and radio inputs -->
@@ -7,10 +9,7 @@
     <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
 {% endblock %}
 
-{% block box_title %}
-    待审批资源列表
-{% endblock %}
-
+{# {% block box_title %}待审批资源列表{% endblock %} #}
 {% block title_button %}
     <button type="button" class="btn btn-default margin" data-toggle="modal" data-target="#modal-edit">
         <a href="/assets/asset_manage_new/{{ asset_type }}" class="text-white">
@@ -20,121 +19,120 @@
 {% endblock %}
 
 {% block assets_table %}
-                    <table id="assets_table" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th style="width: 2%">
-                                <div class="checkbox-inline icheck">
-                                  <label>
-                                    <input type="checkbox" class="flat-green" id="allAndNotAll" onclick="checkOrCancelAll();"><span id="mySpan"></span><br/>
-                                  </label>
-                                </div>
-                            </th>
-                            <th>序号</th>
-                            {% block assets_table_th %}
-                                <th>资产类型</th>
-                                <th>子类型</th>
-                                <th>资产名称</th>
-                                <th>SN</th>
-                                <th>业务线</th>
-                                <th>机房</th>
-                                <th>创建日期</th>
-                                <th>标签</th>
-                            {% endblock %}
-                            <th style="width: 13%">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for asset in assets %}
-                            <tr>
-                                <td>
-                                    <div class="checkbox-inline icheck">
-
-                                          <input type="checkbox" class="flat-green" name="checkbox_items">
-
-                                    </div>
-                                </td>
-                                <td>{{ forloop.counter }}</td>
-                                {% block assets_table_td %}
-                                    {% if asset.asset_type == 'server' %}
-                                        <td class="text-green text-bold">{{ asset.get_asset_type_display }}</td>
-                                        <td>{{ asset.server.get_sub_asset_type_display }}</td>
-                                    {% elif asset.asset_type == 'networkdevice' %}
-                                        <td class="text-yellow text-bold">{{ asset.get_asset_type_display }}</td>
-                                        <td>{{ asset.networkdevice.get_sub_asset_type_display }}</td>
-                                    {% elif asset.asset_type == 'storagedevice' %}
-                                        <td class="text-blue text-bold">{{ asset.get_asset_type_display }}</td>
-                                        <td>{{ asset.storagedevice.get_sub_asset_type_display }}</td>
-                                    {% elif asset.asset_type == 'securitydevice' %}
-                                        <td class="text-red text-bold">{{ asset.get_asset_type_display }}</td>
-                                        <td>{{ asset.securitydevice.get_sub_asset_type_display }}</td>
-                                    {% elif asset.asset_type == 'software' %}
-                                        <td class="text-orange text-bold">{{ asset.get_asset_type_display }}</td>
-                                        <td>{{ asset.software.get_sub_asset_type_display }}</td>
-                                    {% endif %}
-                                    <td><a href="{% url 'assets:detail' asset.id %}">{{ asset.name }}</a></td>
-                                    <td>{{ asset.sn }}</td>
-                                    <td>{{ asset.business_unit|default_if_none:"_" }}</td>
-                                    <td>{{ asset.idc|default:"_" }}</td>
-                                    <td>{{ asset.modify_time|date:"Y/m/d [H:m:s]" }}
-                                    <td>
-                                        {% for tag in asset.tags.all %}
-                                            <label class="label label-primary">{{ tag.name }}</label>
-                                        {% empty %}
-                                            -
-                                        {% endfor %}
-                                    </td>
-
-                                {% endblock %}
-                                <td>
-                                    <!-- 修改、删除 按钮 -->
-                                    <div class="btn-group">
-                                        <!--
-                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-
-                                        <button id="approval_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="审批">
-                                            <a href="{% url 'assets:new_asset_approval_zone' asset.id %}">
-                                                <i class="fa fa-check"></i>
-                                            </a>
-                                        </button>
-                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
-                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        </button>
-                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
-                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </button>
-                                        -->
-                                        <a href="{% url 'assets:new_asset_approval_zone' asset.id %}" id="approval_button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="审批">
-                                            <i class="fa fa-check"></i>
-                                        </a>
-                                        <a href="{% url 'assets:asset_manage_update' asset.id %}" id="edit_button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="修改">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a href="{% url 'assets:asset_manage_update' asset.id %}" id="delete_button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="删除">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+    <table id="assets_table" class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th style="width: 2%">
+                <div class="checkbox-inline icheck">
+                  <label>
+                    <input type="checkbox" class="flat-green" id="allAndNotAll" onclick="checkOrCancelAll();"><span id="mySpan"></span><br/>
+                  </label>
+                </div>
+            </th>
+            <th>序号</th>
+            {% block assets_table_th %}
+                <th>资产类型</th>
+                <th>子类型</th>
+                <th>资产名称</th>
+                <th>SN</th>
+                <th>业务线</th>
+                <th>机房</th>
+                <th>创建日期</th>
+                <th>标签</th>
+            {% endblock %}
+            <th style="width: 13%">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for asset in assets %}
+            <tr>
+                <td>
+                    <div class="checkbox-inline icheck">
+                          <input type="checkbox" class="flat-green" name="checkbox_items">
+                    </div>
+                </td>
+                <td>{{ forloop.counter }}</td>
+                {% block assets_table_td %}
+                    {% if asset.asset_type == 'server' %}
+                        <td class="text-green text-bold">{{ asset.get_asset_type_display }}</td>
+                        <td>{{ asset.server.get_sub_asset_type_display }}</td>
+                    {% elif asset.asset_type == 'networkdevice' %}
+                        <td class="text-yellow text-bold">{{ asset.get_asset_type_display }}</td>
+                        <td>{{ asset.networkdevice.get_sub_asset_type_display }}</td>
+                    {% elif asset.asset_type == 'storagedevice' %}
+                        <td class="text-blue text-bold">{{ asset.get_asset_type_display }}</td>
+                        <td>{{ asset.storagedevice.get_sub_asset_type_display }}</td>
+                    {% elif asset.asset_type == 'securitydevice' %}
+                        <td class="text-red text-bold">{{ asset.get_asset_type_display }}</td>
+                        <td>{{ asset.securitydevice.get_sub_asset_type_display }}</td>
+                    {% elif asset.asset_type == 'software' %}
+                        <td class="text-orange text-bold">{{ asset.get_asset_type_display }}</td>
+                        <td>{{ asset.software.get_sub_asset_type_display }}</td>
+                    {% endif %}
+                    <td><a href="{% url 'assets:detail' asset.id %}">{{ asset.name }}</a></td>
+                    <td>{{ asset.sn }}</td>
+                    <td>{{ asset.business_unit|default_if_none:"_" }}</td>
+                    <td>{{ asset.idc|default:"_" }}</td>
+                    <td>{{ asset.modify_time|date:"Y/m/d [H:m:s]" }}
+                    <td>
+                        {% for tag in asset.tags.all %}
+                            <label class="label label-primary">{{ tag.name }}</label>
                         {% empty %}
-                            <tr>
-                                <div>
-                                您还未创建， <a href="#">立即创建！</a>
-                                </div>
-                            </tr>
+                            -
                         {% endfor %}
-                        </tbody>
-                    </table>
+                    </td>
+
                 {% endblock %}
+                <td>
+                    <!-- 修改、删除 按钮 -->
+                    <div class="btn-group">
+                        <!--
+                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+
+                        <button id="approval_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="审批">
+                            <a href="{% url 'assets:new_asset_approval_zone' asset.id %}">
+                                <i class="fa fa-check"></i>
+                            </a>
+                        </button>
+                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
+                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </button>
+                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
+                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </button>
+                        -->
+                        <a href="{% url 'assets:new_asset_approval_zone' asset.id %}" id="approval_button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="审批">
+                            <i class="fa fa-check"></i>
+                        </a>
+                        <a href="{% url 'assets:asset_manage_update' asset.id %}" id="edit_button" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="bottom" title="修改">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="{% url 'assets:asset_manage_del' asset.id %}" id="delete_button" class="btn btn-sm btn-danger" onclick="return deleteJob();" data-toggle="tooltip" data-placement="bottom" title="删除">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <div>
+                您还未创建， <a href="#">立即创建！</a>
+                </div>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
 
 {% block script %}
 <script>
@@ -147,6 +145,18 @@ $(function () {
 
 <!-- iCheck 1.0.1 -->
 <script src="{% static 'adminlte-2.4.10/plugins/iCheck/icheck.min.js' %}"></script>
+<script>
+    function deleteJob()
+		{
+		     if(confirm("确定要删除吗?"))
+		     {
+		         return true;
+		     }else{
+		         return false;
+			 }
+		}
+</script>
+
 <script type="text/javascript">
 
 

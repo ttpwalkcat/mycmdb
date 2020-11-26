@@ -53,7 +53,7 @@ def index(request):
     assets = models.Asset.objects.all()
     return render(request, "assets/index.html", locals())
 
-# @login_required
+@login_required
 def dashboard(request):
     total = models.Asset.objects.count()
     upline = models.Asset.objects.filter(status=1).count()
@@ -270,6 +270,7 @@ def asset_manage_update(request, asset_id):
 def asset_manage_del(request, asset_id):
     asset = get_object_or_404(models.Asset, pk=asset_id)
     old_status = asset.status
+    full_path = request.get_full_path()
     try:
         asset.status = 7
         asset.save()

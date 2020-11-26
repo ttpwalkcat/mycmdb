@@ -1,0 +1,50 @@
+{% extends 'base_user_info.html' %}
+{% load static %}
+{% block title %}用户个人信息{% endblock %}
+
+{# 用户基本信息 #}
+{% block form_action_user_info %}
+    /accounts/users_manager/{{ user.id }}
+{% endblock %}
+{# 扩展表单 #}
+{% block form_extends_user_info %}
+<div class="row">
+    <div class="form-group">
+        <label for="status" class="col-sm-2 control-label">用户状态</label>
+        <div class="col-sm-5">
+            <select name="status" type="text" class="form-control" placeholder="" value="{{ user.status }}">
+                <option value="True">可用</option>
+                <option value="False">禁用</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-5">
+            <input name="password" type="password" class="form-control" placeholder="" value="{{ user.password }}"/>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block form_button_user_info %}
+    <button class="btn btn-default">
+        <a href="{% url 'accounts:users_list' %}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
+        取消
+        </a>
+    </button>
+    <button type="submit" class="btn btn-primary">
+        提交
+    </button>
+{% endblock %}
+
+{# 重置密码 #}
+{% block form_action_reset_password %}
+    action="{% url 'accounts:reset_password' %}"
+{% endblock %}
+
+{% block form_button_reset_password %}
+    <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭" onclick="window.location.href={% url 'accounts:users_list' %}">
+    <input type="submit" class="btn btn-info">
+    <span id="tip"> </span>
+{% endblock %}

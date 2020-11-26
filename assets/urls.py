@@ -4,7 +4,7 @@ from assets import views
 app_name = 'assets'
 
 urlpatterns = [
-    re_path('^$', views.index),
+    # re_path('^$', views.index),
     path('report/', views.report, name='report'),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("index/", views.index, name="index"),
@@ -28,5 +28,5 @@ urlpatterns = [
     # path("contmanage/", views.software_manage, name="contmanage"),
     # path("tagmanage/", views.software_manage, name="tagmanage"),
 
-    # path("", views.dashboard),
+    path("", views.dashboard),
 ]

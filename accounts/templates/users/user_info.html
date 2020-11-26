@@ -1,0 +1,71 @@
+{% extends 'base_user_info.html' %}
+{% load static %}
+{% block title %}用户个人信息{% endblock %}
+
+{# 用户基本信息 #}
+{% block form_action_user_info %}
+    /accounts/user_info/
+{% endblock %}
+{% block form_button_user_info %}
+    <button class="btn btn-default">
+        <a href="{% url 'accounts:user_info' %}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
+        取消
+        </a>
+    </button>
+    <button type="submit" class="btn btn-primary">
+        提交
+    </button>
+{% endblock %}
+
+{# 重置密码 #}
+{% block form_action_reset_password %}
+    action="{% url 'accounts:reset_password' %}"
+{% endblock %}
+
+{% block form_button_reset_password %}
+    <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
+    <input type="submit" class="btn btn-info">
+    <span id="tip"> </span>
+{% endblock %}
+
+{% block extends_form_tab %}
+<div class="tab-pane" id="reset_password">
+    <!-- 模态框示例（Modal） -->
+    <form method="post" {% block form_action_reset_password %}action="{% url 'accounts:reset_password' %}"{% endblock %} class="form-horizontal" role="form" id="form_reset_password" οnsubmit="return check_form()" name="form_reset_password" style="margin: 20px;">
+        {% csrf_token %}
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="old_password" class="col-sm-3 control-label">原密码</label>
+                    <div class="col-sm-6">
+                        <input id="old_password" name="old_password" type="text" class="form-control" placeholder="old password">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="new_password1" class="col-sm-3 control-label">新密码</label>
+                    <div class="col-sm-6">
+                        <input id="new_password1" name="new_password1" type="password" class="form-control" placeholder="new password">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="new_password2" class="col-sm-3 control-label">确认新密码</label>
+                    <div class="col-sm-6">
+                        <input id="new_password2" name="new_password2" type="password" class="form-control" placeholder="confirm the new password">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            {% block form_button_reset_password %}
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="关闭">
+            <input type="submit" class="btn btn-info">
+            <span id="tip"> </span>
+            {% endblock %}
+        </div>
+    </form>
+</div>
+{% endblock %}

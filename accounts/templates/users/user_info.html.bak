@@ -1,0 +1,242 @@
+{% extends 'base_form.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<form role="form" class="form-horizontal" action="{% block form_action %}/accounts/user_info/{% endblock %}" method="post">
+    {% csrf_token %}
+    <div class="box">
+        <div class="box-header">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="page-header">
+                        {{ asset.get_asset_type_display|default:"用户个人" }}信息
+                        <small class="pull-right" ><a href="#" data-toggle="modal" data-target="#modal-password-reset">修改密码</a></small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">用户名</label>
+                    <div class="col-sm-5">
+                        <input name="username" type="text" class="form-control" placeholder="" value="{{ user.username }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">邮箱</label>
+                    <div class="col-sm-5">
+                        <input name="email" type="text" class="form-control" placeholder="" value="{{ user.email }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="mobile" class="col-sm-2 control-label">手机</label>
+                    <div class="col-sm-5">
+                        <input name="mobile" type="text" class="form-control" placeholder="" value="{{ user.mobile }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="realname" class="col-sm-2 control-label">真实姓名</label>
+                    <div class="col-sm-5">
+                        <input name="realname" type="text" class="form-control" placeholder="" value="{{ user.realname }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="sex" class="col-sm-2 control-label">性别</label>
+                    <div class="col-sm-5">
+                        <select name="sex" type="text" class="form-control" placeholder="" value="{{ user.sex }}">
+                            <option value="1">男</option>
+                            <option value="0">女</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="has_confirmed" class="col-sm-2 control-label">是否认证通过</label>
+                    <div class="col-sm-6">
+                        <input name="has_confirmed" type="text" class="form-control" placeholder="" value="{{ user.has_confirmed }}" disabled/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="last_login" class="col-sm-2 control-label">最后一次登录</label>
+                    <div class="col-sm-6">
+                        <input name="last_login" type="text" class="form-control" placeholder="" value="{{ user.last_login }}" disabled/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <button class="btn btn-default">
+                <a href="{% url 'accounts:user_info' %}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
+                取消
+                </a>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                提交
+            </button>
+        </div>
+    </div>
+
+</form>
+
+<form id="form_reset_password" role="form" class="form-horizontal" action="" οnsubmit="return check_form()" method="post"> {# {% url 'accounts:reset_password' %} #}
+    {% csrf_token %}
+
+<div class="modal fade" id="modal-password-reset" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-xl">   <!-- 大号弹窗 myLargeModalLabel、modal-lg   小号弹窗 mySmallModalLabel、modal-sm，不定义表示默认  -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">重置密码</h4>
+            </div>
+
+            <div class="modal-body">
+                    {# 根据不同资源，编写对应表单 #}
+                    {% block extends_form %}{% endblock %}
+
+                    {# 资源总表对应表单 #}
+                    {% block asset_form %}
+                        <div class="box box-info">
+                            <!--
+                            <div class="box-header with-border">
+                                <h3>资产共有信息</h3>
+                            </div>
+                            -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="old_password" class="col-sm-3 control-label">原密码</label>
+                                        <div class="col-sm-6">
+                                            <input id="old_password" name="old_password" type="text" class="form-control" placeholder="old password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="new_password1" class="col-sm-3 control-label">新密码</label>
+                                        <div class="col-sm-6">
+                                            <input id="new_password1" name="new_password1" type="password" class="form-control" placeholder="new password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="new_password2" class="col-sm-3 control-label">确认新密码</label>
+                                        <div class="col-sm-6">
+                                            <input id="new_password2" name="new_password2" type="password" class="form-control" placeholder="confirm the new password">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endblock %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
+                <button type="button" class="submit-btn btn btn-primary">保存修改</button> {#  onclick="add_info()" #}
+                <span id="tip"> </span>
+            </div>
+
+        </div>
+            <!-- /.modal-content -->
+    </div>
+</div>
+</form>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  // $(function () {
+  //   // Sign up button
+  //   $(".submit-btn").modalForm({formURL: "{% url 'accounts:reset_password' %}"});
+  // });
+  // function add_info(){
+  //     var form_data = $("#form_reset_password").serialize();
+  //     alert(form_data)
+  // }
+
+  function check_form()
+    {
+        var old_password = $.trim($('#old_password').val());
+        var new_password1 = $.trim($('#new_password1').val());
+        var new_password2 = $.trim($('#new_password2').val());
+
+        if(!old_password)
+        {
+            alert('原密码不能为空！');
+            return false;
+        }
+        if(!new_password1)
+        {
+            alert('新密码不能为空！');
+            return false;
+        }
+        if(!new_password2)
+        {
+            alert('确认密码不能为空！');
+            return false;
+        }
+           var form_data = $('#form_reset_password').serialize();
+
+        // 异步提交数据到action/add_action.php页面
+        $.ajax(
+                {
+                    url: "{% url 'accounts:reset_password' %}",
+                    data:{"form_data":form_data,"act":"reset_password"},
+                    type: "post",
+                    beforeSend:function()
+                    {
+                        $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success:function(data)
+                    {
+                        if(data > 0)
+                        {
+
+                            // var msg = "添加";
+                            if(act == "reset_password") msg = "密码修改";
+                            $("#tip").html("<span style='color:blueviolet'>恭喜，" +msg+ "成功！</span>");
+                            // document.location.href='system_notice.php'
+                            alert(msg + "OK！");
+                            location.reload();
+                        }
+                        else
+                        {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            alert('操作失败');
+                        }
+                    },
+                    error:function()
+                    {
+                        alert('请求出错');
+                    },
+                    complete:function()
+                    {
+                        $('#acting_tips').hide();
+                    }
+                });
+
+        return false;
+    }
+</script>
+
+{% endblock %}
+

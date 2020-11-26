@@ -23,12 +23,17 @@ app_name = 'accounts'
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    # path('login/', views.user_login),
+    path('login/', views.user_login, name="login"),
     path('captcha/', include('captcha.urls')),   # 图片验证码
-    # path('accounts/', views.user_login),
-    path('register/', views.register),
-    path('logout/', views.logout),
-    path('confirm/', views.user_confirm),
-    url(r'^login/$', views.user_login),
-
+    path('register/', views.register, name="register"),
+    path('logout/', views.logout, name="logout"),
+    path('confirm/', views.user_confirm, name="confirm"),
+    path('user_info/', views.user_info, name="user_info"),
+    path('users_list/', views.users_list, name="users_list"),
+    path('users_add/', views.users_add, name="users_add"),
+    path('users_manager/<int:user_id>', views.users_manager, name="users_manager"),
+    path('users_manager/<int:user_id>/<str:disabled>', views.users_manager, name="users_disabled"),
+    # path('users_disabled/<int:user_id>', views.users_disabled, name="users_disabled"),
+    path('reset_password/', views.reset_password, name="reset_password"),
+    # url(r'^login/$', views.user_login),<str:username>
 ]

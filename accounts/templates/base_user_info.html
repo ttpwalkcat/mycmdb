@@ -1,0 +1,270 @@
+{% extends 'base_form.html' %}
+{% load static %}
+{% block title %}用户个人信息{% endblock %}
+
+
+{% block content %}
+<div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#user_info" data-toggle="tab">用户信息</a></li>
+              <li><a href="#reset_password" data-toggle="tab">修改密码</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="active tab-pane" id="user_info">
+                    <form id="form_user_info" name="form_user_info" role="form" class="form-horizontal" action="{% block form_action_user_info %}/accounts/user_info/{% endblock %}" method="post">
+                        {% csrf_token %}
+                            <!--
+                            <div class="box-header">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <h2 class="page-header">
+                                            {{ asset.get_asset_type_display|default:"用户个人" }}信息
+                                            <small class="pull-right" ><a href="#" data-toggle="modal" data-target="#modal_password_reset">修改密码</a></small>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            -->
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="username" class="col-sm-2 control-label">用户名</label>
+                                        <div class="col-sm-5">
+                                            <input name="username" type="text" class="form-control" placeholder="" value="{{ user.username }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="email" class="col-sm-2 control-label">邮箱</label>
+                                        <div class="col-sm-5">
+                                            <input name="email" type="text" class="form-control" placeholder="" value="{{ user.email }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="mobile" class="col-sm-2 control-label">手机</label>
+                                        <div class="col-sm-5">
+                                            <input name="mobile" type="text" class="form-control" placeholder="" value="{{ user.mobile }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="realname" class="col-sm-2 control-label">真实姓名</label>
+                                        <div class="col-sm-5">
+                                            <input name="realname" type="text" class="form-control" placeholder="" value="{{ user.realname }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="sex" class="col-sm-2 control-label">性别</label>
+                                        <div class="col-sm-5">
+                                            <select name="sex" type="text" class="form-control" placeholder="" value="{{ user.sex }}">
+                                                <option value="1">男</option>
+                                                <option value="0">女</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="has_confirmed" class="col-sm-2 control-label">是否认证通过</label>
+                                        <div class="col-sm-5">
+                                            {% if user.has_confirmed %}
+                                                <input name="has_confirmed" type="text" class="form-control" placeholder="" value="是" disabled/>
+                                            {% else %}
+                                                <input name="has_confirmed" type="text" class="form-control" placeholder="" value="否" disabled/>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label for="last_login" class="col-sm-2 control-label">最后一次登录</label>
+                                        <div class="col-sm-5">
+                                            <input name="last_login" type="text" class="form-control" placeholder="" value="{{ user.last_login }}" disabled/>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% block form_extends_user_info %}{% endblock %}
+                            </div>
+                            <div class="box-footer">
+                                {% block form_button_user_info %}
+                                <button class="btn btn-default">
+                                    <a href="{% url 'accounts:user_info' %}">  <!-- 通过views返回的 asset_type，拼接出上级页面URL，用于放弃修改时返回对应资产列表 -->
+                                    取消
+                                    </a>
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    提交
+                                </button>
+                                {% endblock %}
+                            </div>
+                    </form>
+                </div>
+                {% block extends_form_tab %}
+                {% endblock %}
+            </div>
+
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    // 提交表单
+    function delete_info(id)
+    {
+        if(!id)
+        {
+            alert('Error！');
+            return false;
+        }
+        // var form_data = new Array();
+
+        $.ajax(
+                {
+                    url: "action/user_action.php",
+                    data:{"id":id, "act":"del"},
+                    type: "post",
+                    beforeSend:function()
+                    {
+                        $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success:function(data)
+                    {
+                        if(data > 0)
+                        {
+                            alert('操作成功');
+                            $("#tip").html("<span style='color:blueviolet'>恭喜，删除成功！</span>");
+
+                            // document.location.href='world_system_notice.php'
+                             location.reload();
+                        }
+                        else
+                        {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                            alert('操作失败');
+                        }
+                    },
+                    error:function()
+                    {
+                        alert('请求出错');
+                    },
+                    complete:function()
+                    {
+                        // $('#tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+    // 编辑表单
+    function get_edit_info(user_id)
+    {
+        if(!user_id)
+        {
+            alert('Error！');
+            return false;
+        }
+        // var form_data = new Array();
+
+        $.ajax(
+                {
+                    url: "action/user_action.php",
+                    data:{"user_id":user_id, "act":"get"},
+                    type: "post",
+                    beforeSend:function()
+                    {
+                        // $("#tip").html("<span style='color:blue'>正在处理...</span>");
+                        return true;
+                    },
+                    success:function(data)
+                    {
+                        if(data)
+                        {
+
+                            // 解析json数据
+                            var data = data;
+
+                            var data_obj = eval("("+data+")");
+
+                            // 赋值
+                            $("#user_id").val(data_obj.user_id);
+
+                            $("#name").val(data_obj.name);
+                            $("#address").val(data_obj.address);
+                            $("#remark").val(data_obj.remark);
+                            $("#act").val("edit");
+
+                            // 将input元素设置为readonly
+                            $('#user_id').attr("readonly","readonly")
+                           // location.reload();
+                        }
+                        else
+                        {
+                            $("#tip").html("<span style='color:red'>失败，请重试</span>");
+                          //  alert('操作失败');
+                        }
+                    },
+                    error:function()
+                    {
+                        alert('请求出错');
+                    },
+                    complete:function()
+                    {
+                        // $('#tips').hide();
+                    }
+                });
+
+        return false;
+    }
+
+    // 提交表单
+    function check_form()
+    {
+        var old_password = $.trim($('#old_password').val());
+        var new_password1 = $.trim($('#new_password1').val());
+        var new_password2 = $.trim($('#new_password2').val());
+
+        if(!old_password)
+        {
+            alert('原密码不能为空！');
+            return false;
+        }
+        if(!new_password1)
+        {
+            alert('新密码不能为空！');
+            return false;
+        }
+        if(!new_password2)
+        {
+            alert('请再次确认密码！');
+            return false;
+        }
+    }
+
+    $(function () { $('#addUserModal').on('hide.bs.modal', function () {
+        // 关闭时清空edit状态为add
+        $("#act").val("add");
+        location.reload();
+    })
+    });
+</script>
+
+{% endblock %}
+

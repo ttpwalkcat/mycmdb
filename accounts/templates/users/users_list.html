@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}待审批资源列表{% endblock %}
+{% block title %}用户管理{% endblock %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static 'adminlte-2.4.10/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css' %}">
@@ -20,7 +20,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">
                     {% block box_title %}
-                        资源列表
+                        用户管理
                     {% endblock %}
                 </h3>
             </div>
@@ -28,56 +28,63 @@
                 <div>
                     {% block title_button %}
                     <button type="button" class="btn btn-default margin" data-toggle="modal" data-target="#modal-edit">
-                        <a href="/assets/asset_manage_new/{{ asset_type }}" class="text-white">
+                        <a href="{% url 'accounts:users_add' %}" class="text-white">
                             <i class="fa fa-plus">&nbsp&nbsp新建</i>
                         </a>
                     </button>
                     {% endblock %}
                 </div>
                 <div class="table">
-                {% block assets_table %}
-                    <table id="assets_table" class="table table-bordered table-striped">
+                {% block users_table %}
+                    <table id="users_table" class="table table-bordered table-striped">
                         <thead>
                         <tr>
                             <th>序号</th>
-                            {% block assets_table_th %}{% endblock %}
+                            {% block users_table_th %}
+                                <th>姓名</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>手机</th>
+                                <th>性别</th>
+                                <th>是否确认</th>
+                                <th>状态</th>
+                                <th>最后登录时间</th>
+                            {% endblock %}
                             <th style="width: 9%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for asset in assets %}
+                        {% for user in users %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                {% block assets_table_td %}{% endblock %}
+                                {% block users_table_td %}
+                                    <th>{{ user.realname }}</th>
+                                    <th>{{ user.username }}</th>
+                                    <th>{{ user.email }}</th>
+                                    <th>{{ user.mobile }}</th>
+                                    <th>{{ user.sex }}</th>
+                                    {% if user.has_confirmed %}
+                                        <th>是</th>
+                                    {% else %}
+                                        <th>否</th>
+                                    {% endif %}
+                                    {% if user.status %}
+                                        <th>可用</th>
+                                    {% else %}
+                                        <th>禁用</th>
+                                    {% endif %}
+                                    <th>{{ user.last_login }}</th>
+                                {% endblock %}
                                 <td>
                                     <!-- 修改、删除 按钮 -->
                                     <div class="btn-group">
-                                        <!--
-                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                        -->
-                                        <a href="{% url 'assets:asset_manage_update' asset.id %}" id="edit_button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="修改">
+                                        <a href="{% url 'accounts:users_manager' user.id %}" id="edit_button" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="bottom" title="修改">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a href="{% url 'assets:asset_manage_del' asset.id%}" id="delete_button" class="btn btn-sm btn-danger" onclick="return deleteJob()" data-toggle="tooltip" data-placement="bottom" title="删除">
-                                            <i class="fa fa-trash-o"></i>
+                                        <a href="{% url 'accounts:users_disabled' user.id "disabled" %}" id="delete_button" class="btn btn-sm btn-danger" onclick="return deleteJob()" data-toggle="tooltip" data-placement="bottom" title="禁用">
+                                            <i class="fa fa-times-circle"></i>
                                         </a>
-                                        <!--
-                                        <button id="edit_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="修改">
-                                            <a href="{% url 'assets:asset_manage_update' asset.id %}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                        </button>
-                                        <button id="delete_button" type="button" class="btn btn-default" data-toggle="tooltip" data-placement="auto bottom" title="删除">
-                                            <a href="{% url 'assets:asset_manage_del' asset.id %}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        </button>
-                                        -->
+
                                     </div>
                                 </td>
                             </tr>
@@ -110,7 +117,7 @@
     // 删除确认弹窗
     function deleteJob()
 		{
-		     if(confirm("确定要删除吗?"))
+		     if(confirm("确定要禁用吗?"))
 		     {
 		         return true;
 		     }else{
@@ -124,7 +131,7 @@
 
     <script>
     $(function () {
-        $('#assets_table').DataTable({
+        $('#users_table').DataTable({
           "paging": true,       <!-- 允许分页 -->
           "lengthChange": true, <!-- 允许改变每页显示的行数 -->
           "searching": true,    <!-- 允许内容搜索 -->
